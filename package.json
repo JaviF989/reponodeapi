@@ -1,0 +1,49 @@
+{
+  "name": "botslack",
+  "version": "1.0.0",
+  "description": "Ejercicio de practica con Slack",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "babel-node": "babel/node --presets=@babel/preset-env",
+    "dev": "nodemon -- exec npm run babel-node src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JaviF989/practicasNode.git"
+  },
+  "keywords": [
+    "slack",
+    "bot"
+  ],
+  "author": "Javi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JaviF989/practicasNode/issues"
+  },
+  "homepage": "https://github.com/JaviF989/practicasNode#readme",
+  "devDependencies": {
+    "babel-loader": "^9.1.2",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "nodemon": "^2.0.20",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "webpack": "^5.75.0",
+    "webpack-dev-middleware": "^6.0.1"
+  },
+  "dependencies": {
+    "@babel/cli": "^7.21.0",
+    "@babel/core": "^7.21.0",
+    "@babel/node": "^7.20.7",
+    "@babel/preset-env": "^7.20.2",
+    "@slack/rtm-api": "^6.1.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "morgan": "^1.10.0",
+    "notenv": "^2.0.3",
+    "promise-mysql": "^5.2.0",
+    "slackbots": "^1.3.0"
+  }
+}
