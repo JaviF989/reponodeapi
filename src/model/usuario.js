@@ -1,4 +1,5 @@
 import getMiConeccion from "../database/database.js";
+import config from "../config.js";
 
 function isWallOfText (text) {
     return (text.split(' ').length >= 15);
@@ -77,7 +78,7 @@ const addUser = async (data) => {
 const isNuevoUsuario = async (idusuario) => {
     try{
     const connection = await getMiConeccion();
-    const nuevoUsuario = await connection.query("SELECT * FROM usuarios where idusuario= ?", idusuario);
+    const nuevoUsuario = await getUserById(idusuario);
     if (nuevoUsuario.length === 0) {
         let walloftext =  0;
         let channel = 0;
@@ -127,11 +128,24 @@ const updateUser = async (data, result) => {
     }
 }
 
+const getUserById = async (idusuario ) => {
+    try{
+        const connection = await getMiConeccion();
+        const result = await connection.query(config.queryUserByID, idusuario);
+        console.log(result);
+        return result;
+    }catch (error) {
+        console.log(error.message);
+    }
+    
+};
+
 
 export const methods = {
     updateEtiqueta,
     updateEtiquetaFromReaction,
     addUser,
     isNuevoUsuario,
+    getUserById,
     updateUser
 };

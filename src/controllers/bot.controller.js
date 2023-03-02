@@ -1,5 +1,4 @@
 import getRTMBot from '../slackconnector/slackConnector.js';
-import getMiConeccion from "../database/database.js";
 import { methods as usuario } from "../model/usuario.js";
 import { methods as reaccion } from "../model/reaccion.js";
 
@@ -7,9 +6,8 @@ import { methods as reaccion } from "../model/reaccion.js";
 //SI NO LO ES, HACE UN UPDATE AL USUARIO DE SUS WALL OF TEXT Y @CANAL
 const evaluarMensaje = async (data) => {
     try{
-        const connection = await getMiConeccion();
         let idusuario = data.user;
-        const result = await connection.query("SELECT * FROM usuarios where idusuario= ?", idusuario);
+        const result = await usuario.getUserById(idusuario);
         if (result.length === 0) {
             usuario.addUser(data);
         } else {
@@ -24,16 +22,15 @@ const evaluarMensaje = async (data) => {
 //SI NO LO ES, HACE UN UPDATE A LA CANTIDAD DE REACCIONES DE ESTE TIPO QUE TIENE EL USUARIO
 const evaluarReaccion = async (data) => {
     try{
-        const connection = await getMiConeccion();
-        let queryString = `idusuario = '${data.user}' and idreaccion = '${data.reaction}'`;
-        const result = await connection.query("SELECT * FROM reacciones where " + queryString);
+        const result = await reaccion.getReaccionesPorUsuario(data.user, data.reaction);
         if (result.length === 0) {
             console.log("No encontre reacciones");
             reaccion.addReaccion(data);
         } else {
-            const { user, reaction } = data;
-            reaccion.updateReaccion(data,result);if(reaction == '+1'){
-                const queryUsuario = await connection.query("SELECT * FROM usuarios where idusuario= ?", data.user);
+            const { reaction } = data;
+            reaccion.updateReaccion(data,result);
+            if(reaction == '+1'){
+                const queryUsuario = await usuario.getUserById(data.user);
                 usuario.updateEtiquetaFromReaction(queryUsuario);
             }
         }

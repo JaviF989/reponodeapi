@@ -1,13 +1,12 @@
-import getMiConeccion from "../database/database.js";
-import config from "../config.js";
+import { methods as usuario} from "../model/usuario.js";
+import { methods as reaccion} from "../model/reaccion.js";
+
 
 
 const getUserById = async (req, res) => {
     try{
-        const connection = await getMiConeccion();
         const {idusuario} = req.params;
-        console.log(idusuario);
-        const result = await connection.query(config.queryUserByID, idusuario);
+        const result = await usuario.getUserById(idusuario);
         res.json(result);
     }catch (error) {
         res.status(500);
@@ -18,9 +17,8 @@ const getUserById = async (req, res) => {
 
 const getReacionesById = async (req, res) => {
     try{
-        const connection = await getMiConeccion();
         const {idreaccion} = req.params;
-        const result = await connection.query(config.queryReaccionByID, idreaccion);
+        const result = await reaccion.getReacionesById(idreaccion);
         res.json(result);
     }catch (error) {
         res.status(500);
@@ -31,8 +29,7 @@ const getReacionesById = async (req, res) => {
 
 const getAplaudidores = async (req, res) => {
     try{
-        const connection = await getMiConeccion();
-        const result = await connection.query(config.queryAplaudidores);
+        const result = await reaccion.getAplaudidores();
         res.json(result);
     }catch (error) {
         res.status(500);
