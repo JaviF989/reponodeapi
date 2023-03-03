@@ -1,6 +1,6 @@
 import getRTMBot from '../slackconnector/slackConnector.js';
-import { methods as usuario } from "../model/usuario.js";
-import { methods as reaccion } from "../model/reaccion.js";
+import { methods as usuarioDAO } from "../model/usuario.js";
+import { methods as reaccionDAO } from "../model/reaccion.js";
 
 //const slack = getRTMBot();
 
@@ -9,11 +9,11 @@ import { methods as reaccion } from "../model/reaccion.js";
 const evaluarMensaje = async (data) => {
     try{
         let idusuario = data.user;
-        const result = await usuario.getUserById(idusuario);
+        const result = await usuarioDAO.getUserById(idusuario);
         if (result.length === 0) {
-            usuario.addUser(data);
+            usuarioDAO.addUser(data);
         } else {
-            usuario.updateUser(data, result);
+            usuarioDAO.updateUser(data, result);
         }
     }catch (error){
         console.log("ERROR: " + error.message);
@@ -26,13 +26,13 @@ const evaluarReaccion = async (data) => {
     try{
         const result = await reaccion.getReaccionesPorUsuario(data.user, data.reaction);
         if (result.length === 0) {
-            reaccion.addReaccion(data);
+            reaccionDAO.addReaccion(data);
         } else {
             const { reaction } = data;
-            reaccion.updateReaccion(data,result);
+            reaccionDAO.updateReaccion(data,result);
             if(reaction == '+1'){
-                const queryUsuario = await usuario.getUserById(data.user);
-                usuario.updateEtiquetaFromReaction(queryUsuario);
+                const queryUsuario = await usuarioDAO.getUserById(data.user);
+                usuarioDAO.updateEtiquetaFromReaction(queryUsuario);
             }
         }
         

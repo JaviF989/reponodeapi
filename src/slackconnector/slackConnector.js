@@ -24,7 +24,6 @@ bot.on('message', async (data) => {
 bot.on('open', () => console.log('bot listooo'));
 bot.on('start', () => {
     bot.postMessageToChannel('nodejs', 'temed enemigos del heredero :snake: :snake:');
-    console.log("Listo el bot");
 })
 
 
